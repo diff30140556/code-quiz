@@ -44,24 +44,64 @@ main{
     align-items: center;
 }
 
+.content{
+    width: 50%;
+    padding: 20px;
+    margin-top: 40px;
+    border: var(--border1);
+    word-wrap: break-word;
+}
+
+.title{
+    font-size: 2.3em;
+    text-align: center;
+}
+
+.introduce{
+    font-size: 1.5em;
+    word-spacing: 2px;
+}
+
+.btn{
+    padding: 10px 15px;
+    border-radius: 8px;
+    border-width: 2px;
+    background: #fff;
+}
+.btn:hover{
+    cursor: pointer;
+    background: rgb(2, 176, 127);
+    color: #fff;
+}
+
+.start-quiz-btn{
+    font-size: 1.4em;
+    font-weight: 600;
+    margin: 0 auto;
+    display: block;
+}
+
+.quiz-options-btn{
+    width: 100%;
+    text-align: start;
+    font-size: 1.3em;
+}
+
 .question h2{
     font-size: 2em;
+    margin-bottom: 50px;
 }
 
 .options{
     display: flex;
     flex-direction: column;
-    width: max-content;
+    width:fit-content;
 }
 
 .options li{
-    border: var(--border1);
     margin-bottom: 30px;
 }
 
-.options li a{
-    display: block;
-    border: var(--border1);
-    padding: 5px 20px;
-    border-radius: 8px;
+.d-none{
+    display: none;
 }
