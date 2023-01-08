@@ -65,12 +65,13 @@ main{
 .btn{
     padding: 10px 15px;
     border-radius: 8px;
-    border-width: 2px;
+    border: 2px solid #000;
     background: #fff;
+    color: #000;
 }
-.btn:hover{
+.btn-hover:hover{
     cursor: pointer;
-    background: rgb(2, 176, 127);
+    background: rgb(176, 176, 176);
     color: #fff;
 }
 
@@ -104,4 +105,46 @@ main{
 
 .d-none{
     display: none;
+}
+
+.correct{
+    border: 2px solid #000;
+    position: relative;
+    background: #00ab03;
+    color: #fff;
+}
+.correct::after{
+    width: max-content;
+    font-size: 1.2em;
+    color: #009603;
+    content: 'Correct! O';
+    position: absolute;
+    left: 120%;
+    animation-name: zoom;
+    animation-duration: 0.3s;
+    /* top: 20%;
+    display: block; */
+}
+@keyframes zoom{
+    from {transform: scale(0)};
+    to {transform: scale(1)};
+}
+
+.incorrect{
+    border: 2px solid #000;
+    position: relative;
+    background: #ff0000;
+    color: #fff;
+}
+.incorrect::after{
+    width: max-content;
+    font-size: 1.2em;
+    color: #ff0000;
+    content: 'Wrong! X';
+    position: absolute;
+    left: 120%;
+    animation-name: zoom;
+    animation-duration: 0.3s;
+    /* top: 20%;
+    display: block; */
 }
