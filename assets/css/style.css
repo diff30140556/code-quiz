@@ -148,3 +148,49 @@ main{
     /* top: 20%;
     display: block; */
 }
+
+.all-done,
+.high-scores{
+    font-size: 1.6em;
+    text-align: center;
+}
+
+.all-done ul span{
+    font-weight: 600;
+    color: rgb(39, 55, 183);
+}
+
+.submit-initials-form{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.submit-initials-form label{
+    margin-bottom: 20px;
+}
+
+.initials{
+    border-radius: 8px;
+    width: 60%;
+    max-width: 330px;
+}
+
+.submit-initials-btn{
+    display: block;
+    margin-top: 20px;
+}
+
+.initials-input-alert{
+    font-size: 0.8em;
+    color: #ff0000;
+    margin-top: 5px;
+}
+
+.scores-list li{
+    margin-bottom: 10px;
+}
+
+.high-scores button{
+    margin: 10px 15px;
+}
