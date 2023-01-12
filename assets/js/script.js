@@ -96,25 +96,30 @@ function renderResults() {
 function renderHighScores(recordsData) {
     console.log(recordsData);
     let recordsStr = '';
-    let highScoresStyling = 'scores-list-styling';
-    let scoreModalStyling = 'high-records';
+    let highScoresStyling = '';
+    let scoreModalStyling = '';
+    let modalZoomEffect = '';
 
-    if(recordsData.length === 0){
-            recordsStr = '';
-            highScoresStyling = '';
-            scoreModalStyling = ''
-    }else {
-        for ( i = 0 ; i < recordsData.length ; i++) {
-            recordsStr += `<li>`+ (i+1) +`. `+ recordsData[i].initials +` - `+ recordsData[i].score +`</li>`
-        }
+    if(recordsData.length !== 0){
+            // recordsStr = '';
+            highScoresStyling = 'scores-list-styling';
+            scoreModalStyling = 'high-records';
+            for ( i = 0 ; i < recordsData.length ; i++) {
+                recordsStr += `<li>`+ (i+1) +`. `+ recordsData[i].initials +` - `+ recordsData[i].score +`</li>`
+            }
     }
+
     console.log(targetId)
     console.log(targetId === 'view-records-btn')
     console.log(targetId === 'clear-records-btn')
     if (targetId === 'view-records-btn' || targetId === 'clearModal-records-btn'){
         console.log('ptin')
+        if (targetId === 'view-records-btn'){
+            modalZoomEffect = 'modal-zoom-in';
+        }
+
         modalEl.innerHTML = 
-        `<div class="modal-body">
+        `<div class="modal-body `+ modalZoomEffect +`">
             <header>
                 <h2>High Scores:</h2>
             </header>
@@ -210,7 +215,9 @@ function renderHighScores(recordsData) {
     
     function closeModal() {
         console.log('clos')
-        modalEl.innerHTML = '';
+        console.log(modalEl.children[0]);        
+        modalEl.children[0].classList.add('modal-zoom-out');
+        setTimeout( () => modalEl.innerHTML = '' , 500);
     }
 
     function detectBtn(e){
