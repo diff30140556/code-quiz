@@ -122,7 +122,7 @@ main{
     content: 'Correct! O';
     position: absolute;
     left: 120%;
-    animation-name: zoom;
+    animation-name: zoomIn;
     animation-duration: 0.3s;
 }
 
@@ -139,7 +139,7 @@ main{
     content: 'Wrong! X';
     position: absolute;
     left: 120%;
-    animation-name: zoom;
+    animation-name: zoomIn;
     animation-duration: 0.3s;
 }
 
@@ -225,8 +225,19 @@ main{
     top: 10%;
     margin: auto;
     padding-bottom: 20px;
-    animation-name: zoom;
+}
+
+
+.modal-zoom-in{
+    animation-name: zoomIn;
     animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.modal-zoom-out{
+    animation-name: zoomOut;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 .modal-body h2{
     text-align: center;
@@ -273,7 +284,12 @@ main{
     cursor: unset !important;
 }
 
-    @keyframes zoom{
-        from {transform: scale(0)};
-        to {transform: scale(1)};
+    @keyframes zoomIn{
+        0% {transform: scale(0);}
+        100% {transform: scale(1);}
+    }
+
+    @keyframes zoomOut{
+        0% {transform: scale(1);}
+        100% {transform: scale(0);}
     }
