@@ -68,6 +68,8 @@ main{
     border: 2px solid #000;
     background: #fff;
     color: #000;
+    font-weight: 600;
+    transition: 0.15s ease-in-out;
 }
 .btn-hover:hover{
     cursor: pointer;
@@ -122,12 +124,6 @@ main{
     left: 120%;
     animation-name: zoom;
     animation-duration: 0.3s;
-    /* top: 20%;
-    display: block; */
-}
-@keyframes zoom{
-    from {transform: scale(0)};
-    to {transform: scale(1)};
 }
 
 .incorrect{
@@ -145,8 +141,6 @@ main{
     left: 120%;
     animation-name: zoom;
     animation-duration: 0.3s;
-    /* top: 20%;
-    display: block; */
 }
 
 .all-done,
@@ -187,10 +181,99 @@ main{
     margin-top: 5px;
 }
 
+.high-scores,
+.modal-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.scores-list-styling{
+    background: rgba(95, 128, 235, 0.687);
+    border-radius: 8px;
+    padding: 3% 30%;
+}
+
+.scores-list{
+    overflow-y: auto;
+}
+
 .scores-list li{
+    text-align: start;
+    width: 100%;
     margin-bottom: 10px;
+    font-weight: 600;
+}
+.scores-list li:nth-child(-n + 3){
+    color:rgb(230, 62, 196);
 }
 
 .high-scores button{
     margin: 10px 15px;
 }
+
+.modal-body{
+    border-radius: 8px;
+    position: absolute;
+    border: 1px solid #009603;
+    background: rgb(239, 239, 239);
+    z-index: 10;
+    width: 40%;
+    left: 0;
+    right: 0;
+    top: 10%;
+    margin: auto;
+    padding-bottom: 20px;
+    animation-name: zoom;
+    animation-duration: 0.5s;
+}
+.modal-body h2{
+    text-align: center;
+    font-size: 2em;
+}
+.modal-body footer{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-body footer button{
+    margin: 0 15px;
+}
+
+.high-records{
+    height: 300px;
+    width: 300px;
+    overflow-y: auto;
+    font-size: 1.6em;
+    background: rgb(201, 207, 211);
+    border-radius: 6px;
+    padding: 20px 30px;
+}
+
+.overlay{
+    position: absolute;
+    border: 1px solid #ff0000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(75, 75, 75, 0.763);
+}
+
+.clear-records-btn{
+    background: rgb(243, 93, 93);
+    color: #fff;
+}
+
+.disabled{
+    background: rgb(184, 184, 184);
+    box-shadow: inset 0 0 2px 1px rgb(135, 135, 135);
+    color: rgb(255, 255, 255);
+    cursor: unset !important;
+}
+
+    @keyframes zoom{
+        from {transform: scale(0)};
+        to {transform: scale(1)};
+    }
