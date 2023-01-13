@@ -26,6 +26,9 @@ ul,ol{
     align-items: center;
     padding: 0 50px;
     border: var(--border1);
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .header p{
@@ -39,15 +42,16 @@ ul,ol{
 }
 
 main{
+    margin-top: 87px;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 }
 
 .content{
-    width: 50%;
+    width: 650px;
     padding: 20px;
-    margin-top: 40px;
     border: var(--border1);
     word-wrap: break-word;
 }
@@ -88,6 +92,11 @@ main{
     width: 100%;
     text-align: start;
     font-size: 1.3em;
+}
+
+.question{
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .question h2{
@@ -269,7 +278,8 @@ main{
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(75, 75, 75, 0.763);
+    background: rgba(85, 84, 84, 0.7);
+    backdrop-filter: blur(2px);
 }
 
 .clear-records-btn{
@@ -286,10 +296,14 @@ main{
 
     @keyframes zoomIn{
         0% {transform: scale(0);}
+        55% {transform: scale(1.05);}
+        80% {transform: scale(0.95);}
         100% {transform: scale(1);}
     }
-
+    
     @keyframes zoomOut{
         0% {transform: scale(1);}
+        20% {transform: scale(0.90);}
+        45% {transform: scale(1.05);}
         100% {transform: scale(0);}
     }
