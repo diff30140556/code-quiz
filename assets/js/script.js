@@ -60,17 +60,6 @@ function startQuiz() {
     if(!isPlaying){
         isPlaying = true;
         console.log(isPlaying)
-
-        setTimer = setInterval(() => {
-            if(remainingTime > 0){
-                remainingTime--;
-            }
-            timerEl.textContent = remainingTime;
-            // if timer reaches 0, end quiz
-            if (remainingTime == 0){
-                quizEnd();
-            }
-        }, 1000);
     }
 
     // view records button can't get clicked during the game, add a custom styling as well
@@ -98,6 +87,25 @@ function startQuiz() {
     newQuizDataBase.splice(randomNum, 1);
 }
 
+function startTimer() {
+    setTimer = setInterval(() => {
+        if(remainingTime > 0){
+            remainingTime--;
+        }
+        timerEl.textContent = remainingTime;
+        // if timer reaches 0, end quiz
+        if (remainingTime == 0){
+            scoreResult.timeLeft = remainingTime;
+            clearTimer();
+            quizEnd();
+        }
+    }, 1000);
+}
+
+function clearTimer() {
+    clearInterval(setTimer);
+}
+
 // answering function
 function answering(e) {
     // after answered, select and disabled all of the button
@@ -116,34 +124,26 @@ function answering(e) {
         scoreResult.inCorrect++;
         // subtract the remaining time if it's wrong, if it less than zero, set it as zero then end the quiz
         remainingTime -= 30;
-        // if( remainingTime <= 0 ){
-        //     remainingTime = 0;
-        // }
+        if(remainingTime < 0){
+            remainingTime = 0;
+            timerEl.textContent = remainingTime
+        }
     }
     
     // if there is no quiz in the dataBase or the time
-    if(newQuizDataBase.length == 0 || !isPlaying){
-        console.log('no more')
-        setTimeout(function() {
-            scoreResult.timeLeft = remainingTime;
-            quizEnd();
-        }, 1000);
-    }else if(remainingTime <= 0){
-        remainingTime = 0;
+    if(newQuizDataBase.length == 0 || remainingTime === 0){
+        clearTimer();
+        console.log(remainingTime);
         scoreResult.timeLeft = remainingTime;
+        setTimeout(quizEnd, 1000);
     }else{
-        console.log('ss')
         setTimeout(startQuiz, 1000);
     }
 }
 
 function quizEnd() {
     console.log('end')
-    // if (remainingTime < 0) {
-    //     timerEl.textContent = 0;
-    // }
     isPlaying = false;
-    clearInterval(setTimer);
     calculateResult();
 }
 
@@ -278,6 +278,7 @@ function renderHighScores(recordsData) {
             // click the start button to start the quiz
             case ('start-quiz-btn'): 
             startQuiz();
+            startTimer();
             break;
             // click the options button to answer the question
             case ('quiz-options-btn'): 

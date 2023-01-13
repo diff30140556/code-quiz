@@ -42,7 +42,7 @@ ul,ol{
 }
 
 main{
-    margin-top: 87px;
+    margin-top: 115px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -205,6 +205,7 @@ main{
 }
 
 .scores-list{
+    max-height: 300px;
     overflow-y: auto;
 }
 
@@ -262,7 +263,7 @@ main{
 }
 
 .high-records{
-    height: 300px;
+    max-height: 300px;
     width: 300px;
     overflow-y: auto;
     font-size: 1.6em;
