@@ -1,3 +1,4 @@
+// store DOM elements in a variable to reference/change in the functions
 const contentEl = document.querySelector('.content');
 const wrapEl = document.querySelector('.wrap');
 const welcomeEl = document.querySelector('.welcome');
@@ -5,14 +6,13 @@ const timerEl = document.querySelector('.timer');
 const viewScoresEl = document.querySelector('#view-records-btn')
 const modalEl = document.querySelector('.modal');
 let targetId = '';
-// let initialsEl;
-// let initialsAlertEl;
+// declare variable to save the data needed
 let recordsData = JSON.parse(localStorage.getItem('highRecords')) || [];
 console.log(recordsData)
-
+// store all of the questions, options and answer in an array
 const quizDataBase = [
     {
-        question: 'which fruits below is red color?',
+        question: 'which fruits below is red color? which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?',
         options: {
             one: 'banana',
             two: 'apple',
@@ -44,33 +44,107 @@ const quizDataBase = [
 ]
 let newQuizDataBase = [];
 let answer = '';
-let scoreResult = {};
+let scoreResult = {
+    correct: 0,
+    inCorrect: 0,
+};
+let isPlaying = false;
+let setTimer;
+let remainingTime;
 
-
+// startQuiz function
 function startQuiz() {
+    // hen quiz start, set up a countdown timer
+    // only set up once when the first quiz pops up, prevent setting up multiple timer
+    console.log(isPlaying)
+    if(!isPlaying){
+        isPlaying = true;
+        console.log(isPlaying)
+
+        setTimer = setInterval(() => {
+            if(remainingTime > 0){
+                remainingTime--;
+            }
+            timerEl.textContent = remainingTime;
+            // if timer reaches 0, end quiz
+            if (remainingTime == 0){
+                quizEnd();
+            }
+        }, 1000);
+    }
+
+    // view records button can't get clicked during the game, add a custom styling as well
     viewScoresEl.disabled = true;
     viewScoresEl.classList.add('disabled');
     viewScoresEl.classList.remove('btn-hover');
-    console.log('start');
+    
+    // pick a random number to render a question from the quizDataBase
     const randomNum = Math.floor(Math.random() * newQuizDataBase.length);
     contentEl.innerHTML = 
     `<div class="quiz-section">
     <div class="question">
     <h2>`+ newQuizDataBase[randomNum].question + `</h2>
     </div>
-    <ol class="options">
-    <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.one + `</button></li>
-    <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.two + `</button></li>
-    <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.three + `</button></li>
-    <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.four + `</button></li>
-    </ol>
+        <ol class="options">
+            <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.one + `</button></li>
+            <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.two + `</button></li>
+            <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.three + `</button></li>
+            <li><button id="quiz-options-btn" class="quiz-options-btn btn btn-hover">`+ newQuizDataBase[randomNum].options.four + `</button></li>
+        </ol>
     </div>`;
-    
-    console.log(newQuizDataBase[randomNum].answer);
-    
+            
+    //store the answer for the validation then remove the question from the dataBase 
     answer = newQuizDataBase[randomNum].answer;
     newQuizDataBase.splice(randomNum, 1);
-    console.log(newQuizDataBase);
+}
+
+// answering function
+function answering(e) {
+    // after answered, select and disabled all of the button
+    const optionsBtn = document.querySelectorAll('.quiz-options-btn')
+    for (let element of optionsBtn){
+        element.disabled = true;
+        element.classList.remove('btn-hover')
+    }    
+    
+    // if the button content equal the answer, answer is correct, otherwise is wrong. Adding custom styling to make it different
+    if(e.target.textContent === answer){
+        e.target.classList.add('correct');
+        scoreResult.correct++;
+    } else {
+        e.target.classList.add('incorrect');
+        scoreResult.inCorrect++;
+        // subtract the remaining time if it's wrong, if it less than zero, set it as zero then end the quiz
+        remainingTime -= 30;
+        // if( remainingTime <= 0 ){
+        //     remainingTime = 0;
+        // }
+    }
+    
+    // if there is no quiz in the dataBase or the time
+    if(newQuizDataBase.length == 0 || !isPlaying){
+        console.log('no more')
+        setTimeout(function() {
+            scoreResult.timeLeft = remainingTime;
+            quizEnd();
+        }, 1000);
+    }else if(remainingTime <= 0){
+        remainingTime = 0;
+        scoreResult.timeLeft = remainingTime;
+    }else{
+        console.log('ss')
+        setTimeout(startQuiz, 1000);
+    }
+}
+
+function quizEnd() {
+    console.log('end')
+    // if (remainingTime < 0) {
+    //     timerEl.textContent = 0;
+    // }
+    isPlaying = false;
+    clearInterval(setTimer);
+    calculateResult();
 }
 
 function renderResults() {
@@ -97,8 +171,8 @@ function renderHighScores(recordsData) {
     console.log(recordsData);
     let recordsStr = '';
     let highScoresStyling = '';
-    let scoreModalStyling = '';
     let modalZoomEffect = '';
+    let scoreModalStyling = '';
 
     if(recordsData.length !== 0){
             // recordsStr = '';
@@ -146,37 +220,6 @@ function renderHighScores(recordsData) {
 
     }
     
-    function answering(e) {
-        const optionsBtn = document.querySelectorAll('.quiz-options-btn')
-        for (let element of optionsBtn){
-            element.disabled = true;
-            element.classList.remove('btn-hover')
-        }
-        console.log('btn')
-        console.log(e.target.textContent)
-        
-        
-        if(e.target.textContent === answer){
-            console.log('correct')
-            e.target.classList.add('correct');
-            scoreResult.correct++;
-        } else {
-            console.log('wrong');
-            e.target.classList.add('incorrect');
-            scoreResult.inCorrect++;
-        }
-        
-        console.log(newQuizDataBase.length)
-        if(newQuizDataBase.length == 0){
-            console.log('no more')
-            setTimeout(function() {
-                scoreResult.timeLeft = timerEl.textContent;
-                calculateResult();
-            }, 1000);
-        }else{
-            setTimeout(startQuiz, 1000);
-        }
-    }
     
     function calculateResult() {
         let correct = scoreResult.correct;
@@ -184,6 +227,9 @@ function renderHighScores(recordsData) {
         let timeLeft = scoreResult.timeLeft;
         scoreResult.accuracy = ((correct / quizDataBase.length * 100)).toFixed(1);
         scoreResult.score = correct * 3 - inCorrect * 1 + timeLeft * 1.5;
+        if(scoreResult.score < 0){
+            scoreResult.score = 0;
+        }
         renderResults();
     }
     
@@ -220,77 +266,63 @@ function renderHighScores(recordsData) {
         setTimeout( () => modalEl.innerHTML = '' , 500);
     }
 
+    // when a button got clicked, analyze which btn it is and run the corresponding function
     function detectBtn(e){
         e.preventDefault();
         if (e.target.nodeName !== 'BUTTON') {
             return;
         }
-        console.log(e)
-        console.log(e.target.nodeName);
+
         targetId = e.target.id;
-        console.log(targetId);
-
         switch (targetId) {
+            // click the start button to start the quiz
             case ('start-quiz-btn'): 
-                startQuiz();
-                break;
-
+            startQuiz();
+            break;
+            // click the options button to answer the question
             case ('quiz-options-btn'): 
-                answering(e);
-                break;
-
+            answering(e);
+            break;
+            // click the submit button to save your records with your initials
             case ('submit-initials-btn'): 
                 validateInitials();
                 break;
-
+            // click the go back button to navigate to the main page
             case ('go-back-btn'): 
                 init();
                 break;
-        
+            // click the clear button to clear the data in local storage
             case ('clear-records-btn'):
                 clearRecordsData();
                 break;
-
             case ('clearModal-records-btn'):
                 clearRecordsData();
+            // click the button to view records with a modal window
                 break;
-        
             case ('view-records-btn'):
                 renderHighScores(recordsData);
+            // click the button to close the modal window
                 break;
-
             case ('close-modal-btn'):
                 closeModal();
         }
-    
-    // if (targetClass.includes('quiz-options-btn')){
-    //     answering(e);
-    // }
-    // if (targetClass.includes('submit-initials-btn') && initialsEl.textContent !== ''){
-    //     highScores();
-    // }
-
-    // if (targetClass.includes('go-back-btn')){
-    //     init();
-    // }
-
-    // if (targetClass.includes('start-quiz-btn')){
-    //     startQuiz();
-    // }
 }
 
+// initial function
 function init(){
-    newQuizDataBase = [...quizDataBase];
-    scoreResult = {
-        correct: 0,
-        inCorrect: 0,
-        timeLeft: 0,
-        accuracy: 0,
-        score: 0
-    }
+    // reset all of the data to use first
+    remainingTime = 60;
+    timerEl.textContent = remainingTime;
+    scoreResult.correct = 0;
+    scoreResult.inCorrect = 0;
+    // view high scores button is able to click only when the client is on the first page
     viewScoresEl.disabled = false;
     viewScoresEl.classList.remove('disabled');
     viewScoresEl.classList.add('btn-hover');
+    // deep copy from original quiz data to reset the questions without re-declare the whole content
+    newQuizDataBase = [...quizDataBase];
+
+    // render the main page to the browser
     contentEl.innerHTML = 
     `<div class="welcome">
     <h1 class="title"> Code Quiz</h1>
@@ -299,6 +331,8 @@ function init(){
     </div>`
 }
 
+// add event listener on the .wrap element
 wrapEl.addEventListener('click', detectBtn)
 
+// run initial function when the page loaded
 init();
