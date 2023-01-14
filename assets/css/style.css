@@ -2,6 +2,7 @@
     --border1: 1px solid #000;
 }
 
+/* initialize setting */
 *,*::after,*::before{
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -16,108 +17,123 @@ ul,ol{
     padding: 0;
 }
 
+/* main window page setting */
 .wrap{
     margin: 0 auto;
+    height: 100vh;
+    background: rgb(219, 219, 219);
 }
 
+/* header setting */
 .header{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 50px;
     border: var(--border1);
-    position: fixed;
     top: 0;
-    width: 100%;
+    background: rgb(132, 132, 132);
 }
-
 .header p{
     font-size: 1.5em;
+    color: #fff;
+}
+.timer-10{
+    color: #d70000;
 }
 
-.recordBtn{
-    border: var(--border1);
-    padding: 5px 10px;
-    font-size: 1.3em;
-}
-
+/* main section page setting */
 main{
-    margin-top: 115px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: hidden;
+    padding: 0 20px;
 }
 
+/* quiz content section setting */
 .content{
     width: 650px;
     padding: 20px;
-    border: var(--border1);
     word-wrap: break-word;
+    border-radius: 8px;
+    margin-top: 40px;
+    box-shadow: rgb(62, 62, 62) 0 1px 4px 0.5px;
 }
 
+/* main page's title */
 .title{
     font-size: 2.3em;
     text-align: center;
+    color: #1bca00;
 }
 
+/* introduce content */
 .introduce{
     font-size: 1.5em;
     word-spacing: 2px;
+    color: #9f08bd;
 }
 
+/* Basic styling for all buttons */
 .btn{
     padding: 10px 15px;
     border-radius: 8px;
     border: 2px solid #000;
-    background: #fff;
+    background: rgb(255, 255, 255);
     color: #000;
     font-weight: 600;
     transition: 0.15s ease-in-out;
 }
 .btn-hover:hover{
     cursor: pointer;
-    background: rgb(176, 176, 176);
+    background: rgb(238, 168, 54);
     color: #fff;
 }
 
+/* start quiz button */
 .start-quiz-btn{
     font-size: 1.4em;
-    font-weight: 600;
     margin: 0 auto;
     display: block;
 }
 
+/* quiz question setting */
+.question{
+    max-height: 300px;
+    overflow-y: auto;
+}
+.question h2{
+    font-size: 2em;
+    margin-bottom: 50px;
+    color: #000000;
+}
+
+/* quiz options setting */
+.options{
+    display: flex;
+    /* justify-content: center; */
+    /* flex-direction: column; */
+    width:100%;
+    flex-wrap: wrap;
+}
+.options li{
+    width: 40%;
+    margin: 15px 20px 20px 0px;
+}
+
+/* options button */
 .quiz-options-btn{
     width: 100%;
     text-align: start;
     font-size: 1.3em;
 }
 
-.question{
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.question h2{
-    font-size: 2em;
-    margin-bottom: 50px;
-}
-
-.options{
-    display: flex;
-    flex-direction: column;
-    width:fit-content;
-}
-
-.options li{
-    margin-bottom: 30px;
-}
-
+/* display none setting */
 .d-none{
     display: none;
 }
 
+/* styling when answer correct */
 .correct{
     border: 2px solid #000;
     position: relative;
@@ -135,6 +151,7 @@ main{
     animation-duration: 0.3s;
 }
 
+/* styling when answer incorrect */
 .incorrect{
     border: 2px solid #000;
     position: relative;
@@ -152,17 +169,23 @@ main{
     animation-duration: 0.3s;
 }
 
+/* all-done and high-scores section setting */
 .all-done,
 .high-scores{
-    font-size: 1.6em;
+    font-size: 1.4em;
     text-align: center;
 }
 
+/* score result list setting */
+.all-done ul li{
+    margin-bottom: 10px;
+}
 .all-done ul span{
     font-weight: 600;
     color: rgb(39, 55, 183);
 }
 
+/* input initials form setting */
 .submit-initials-form{
     margin-top: 50px;
     display: flex;
@@ -172,24 +195,24 @@ main{
 .submit-initials-form label{
     margin-bottom: 20px;
 }
-
 .initials{
     border-radius: 8px;
     width: 60%;
     max-width: 330px;
 }
-
+/* submit initials form button */
 .submit-initials-btn{
     display: block;
     margin-top: 20px;
 }
-
+/* alert setting when the input in blank */
 .initials-input-alert{
     font-size: 0.8em;
     color: #ff0000;
     margin-top: 5px;
 }
 
+/* high-scores and modal-body section setting */
 .high-scores,
 .modal-body{
     display: flex;
@@ -198,38 +221,38 @@ main{
     justify-content: center;
 }
 
+/* high scores list styling */
 .scores-list-styling{
     background: rgba(95, 128, 235, 0.687);
     border-radius: 8px;
-    padding: 3% 30%;
+    padding: 2% 30%;
 }
-
 .scores-list{
     max-height: 300px;
     overflow-y: auto;
 }
-
 .scores-list li{
     text-align: start;
     width: 100%;
     margin-bottom: 10px;
     font-weight: 600;
 }
-.scores-list li:nth-child(-n + 3){
-    color:rgb(230, 62, 196);
-}
-
 .high-scores button{
     margin: 10px 15px;
 }
+/* top 3 of the records' styling */
+.scores-list li:nth-child(-n + 3){
+    color:rgb(228, 34, 189);
+}
 
+/* modal window's setting */
 .modal-body{
     border-radius: 8px;
     position: absolute;
     border: 1px solid #009603;
     background: rgb(239, 239, 239);
     z-index: 10;
-    width: 40%;
+    max-width: 450px;
     left: 0;
     right: 0;
     top: 10%;
@@ -237,18 +260,7 @@ main{
     padding-bottom: 20px;
 }
 
-
-.modal-zoom-in{
-    animation-name: zoomIn;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-}
-
-.modal-zoom-out{
-    animation-name: zoomOut;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-}
+/* modal body's styling */
 .modal-body h2{
     text-align: center;
     font-size: 2em;
@@ -257,11 +269,10 @@ main{
     display: flex;
     justify-content: center;
 }
-
 .modal-body footer button{
     margin: 0 15px;
 }
-
+/* high-records on modal window */
 .high-records{
     max-height: 300px;
     width: 300px;
@@ -271,7 +282,7 @@ main{
     border-radius: 6px;
     padding: 20px 30px;
 }
-
+/* overlay's setting */
 .overlay{
     position: absolute;
     border: 1px solid #ff0000;
@@ -283,18 +294,35 @@ main{
     backdrop-filter: blur(2px);
 }
 
+/* clear records on modal window */
 .clear-records-btn{
     background: rgb(243, 93, 93);
     color: #fff;
 }
 
+/* disabled button styling */
 .disabled{
-    background: rgb(184, 184, 184);
-    box-shadow: inset 0 0 2px 1px rgb(135, 135, 135);
+    background: rgb(170, 170, 170);
+    box-shadow: inset 0 0 2px 1px rgb(133, 133, 133);
     color: rgb(255, 255, 255);
     cursor: unset !important;
+    border: 1px solid rgb(67, 67, 67)
 }
 
+/* zoom in effect */
+.modal-zoom-in{
+    animation-name: zoomIn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+/* zoom out effect */
+.modal-zoom-out{
+    animation-name: zoomOut;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+    /* zoom in animation */
     @keyframes zoomIn{
         0% {transform: scale(0);}
         55% {transform: scale(1.05);}
@@ -302,9 +330,47 @@ main{
         100% {transform: scale(1);}
     }
     
+    /* zoom out animation */
     @keyframes zoomOut{
         0% {transform: scale(1);}
         20% {transform: scale(0.90);}
         45% {transform: scale(1.05);}
         100% {transform: scale(0);}
+    }
+
+    /* responsive website setting for small size devices */
+    @media only screen and (max-width: 450px) {
+        .scores-list-styling{
+            padding: 2% 20%;
+        }
+
+        .header{
+            flex-direction: column;
+            padding-top: 15px;
+        }
+
+        .header p {
+            margin: 15px 0
+        }
+
+        .options li{
+            width: 80%;
+        }
+
+        .modal-body{
+            width: 80%;
+        }
+
+        .high-records{
+            width: unset;
+            max-width: 350px;
+        }
+
+        .modal-body footer{
+            flex-direction: column;
+        }
+
+        .modal-body footer button{
+            margin: 10px 0;
+        }
     }

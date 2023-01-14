@@ -54,12 +54,9 @@ let remainingTime;
 
 // startQuiz function
 function startQuiz() {
-    // hen quiz start, set up a countdown timer
-    // only set up once when the first quiz pops up, prevent setting up multiple timer
-    console.log(isPlaying)
+    // store the status if the user is playing
     if(!isPlaying){
         isPlaying = true;
-        console.log(isPlaying)
     }
 
     // view records button can't get clicked during the game, add a custom styling as well
@@ -87,14 +84,18 @@ function startQuiz() {
     newQuizDataBase.splice(randomNum, 1);
 }
 
+// set up a countdown timer
 function startTimer() {
     setTimer = setInterval(() => {
-        if(remainingTime > 0){
+        if(remainingTime > 0) {
             remainingTime--;
         }
         timerEl.textContent = remainingTime;
-        // if timer reaches 0, end quiz
-        if (remainingTime == 0){
+        // if timer reaches 0, clear timer and end quiz
+        if (remainingTime <= 10) {
+            timerEl.classList.add('timer-10');
+        }
+        if (remainingTime == 0) {
             scoreResult.timeLeft = remainingTime;
             clearTimer();
             quizEnd();
@@ -102,15 +103,16 @@ function startTimer() {
     }, 1000);
 }
 
+// clear the timer
 function clearTimer() {
     clearInterval(setTimer);
 }
 
 // answering function
 function answering(e) {
-    // after answered, select and disabled all of the button
+    // after answered, select and disabled all of the option buttons
     const optionsBtn = document.querySelectorAll('.quiz-options-btn')
-    for (let element of optionsBtn){
+    for (let element of optionsBtn) {
         element.disabled = true;
         element.classList.remove('btn-hover')
     }    
@@ -122,32 +124,51 @@ function answering(e) {
     } else {
         e.target.classList.add('incorrect');
         scoreResult.inCorrect++;
-        // subtract the remaining time if it's wrong, if it less than zero, set it as zero then end the quiz
+        // subtract the remaining time if answered wrong, remaining time can't less than zero
         remainingTime -= 30;
         if(remainingTime < 0){
             remainingTime = 0;
-            timerEl.textContent = remainingTime
+            timerEl.classList.add('timer-10');
+            timerEl.textContent = remainingTime;
         }
     }
     
-    // if there is no quiz in the dataBase or the time
-    if(newQuizDataBase.length == 0 || remainingTime === 0){
+    // if there is no quiz in the dataBase or the remaining time reaches zero, clear timer and end quiz. Else, keep rendering new question
+    if(newQuizDataBase.length == 0 || remainingTime === 0) {
         clearTimer();
-        console.log(remainingTime);
         scoreResult.timeLeft = remainingTime;
         setTimeout(quizEnd, 1000);
-    }else{
+    }else {
         setTimeout(startQuiz, 1000);
     }
 }
 
+// quizEnd function
 function quizEnd() {
-    console.log('end')
     isPlaying = false;
     calculateResult();
 }
 
+// calculateResult function
+function calculateResult() {
+    let correct = scoreResult.correct;
+    let inCorrect = scoreResult.inCorrect;
+    let timeLeft = scoreResult.timeLeft;
+
+    // calculate the accuracy and final score then save into 'scoreResult' object
+    scoreResult.accuracy = ((correct / quizDataBase.length * 100)).toFixed(1);
+    scoreResult.score = correct * 3 - inCorrect * 1 + timeLeft * 1.5;
+    // score can't less than zero
+    if(scoreResult.score < 0){
+        scoreResult.score = 0;
+    }
+
+    renderResults();
+}
+
+// renderResults function
 function renderResults() {
+    // render results to the page
     contentEl.innerHTML = 
     `<div class="all-done">
     <h2>Quiz End!</h2>
@@ -167,31 +188,56 @@ function renderResults() {
     </div>`
 }
 
-function renderHighScores(recordsData) {
-    console.log(recordsData);
+// validation function
+function validateInitials() {
+    // store the dynamic element in a variable
+    const initialsEl = document.querySelector('.initials');
+    const initialsAlertEl = document.querySelector('.initials-input-alert');
+    let highScoresObj = {};
+    
+    // if input is blank, pop on the message
+    if(initialsEl.value ==='') {
+        initialsAlertEl.textContent = "Please enter your initials!"
+    } else {
+        // else, push the data to 'recordsData' for storing in local storage
+        highScoresObj.initials = initialsEl.value;
+        highScoresObj.score = scoreResult.score;
+        recordsData.push(highScoresObj);
+        saveRecordsToLocal();
+    } ;
+}
+
+// saving records to local function
+function saveRecordsToLocal() {
+    // sort the record by score from high to low before saving
+    recordsData.sort( (a, b) => b.score - a.score );
+    localStorage.setItem('highRecords', JSON.stringify(recordsData));
+    renderHighScores();
+}
+
+// render high scores function
+function renderHighScores() {
     let recordsStr = '';
     let highScoresStyling = '';
     let modalZoomEffect = '';
     let scoreModalStyling = '';
 
+    // adding the styling and saving the records data with loop if the record is not empty
     if(recordsData.length !== 0){
-            // recordsStr = '';
-            highScoresStyling = 'scores-list-styling';
-            scoreModalStyling = 'high-records';
-            for ( i = 0 ; i < recordsData.length ; i++) {
+        highScoresStyling = 'scores-list-styling';
+        scoreModalStyling = 'high-records';
+        for ( i = 0 ; i < recordsData.length ; i++) {
                 recordsStr += `<li>`+ (i+1) +`. `+ recordsData[i].initials +` - `+ recordsData[i].score +`</li>`
             }
     }
 
-    console.log(targetId)
-    console.log(targetId === 'view-records-btn')
-    console.log(targetId === 'clear-records-btn')
+    // pop up a modal rendered with high scores if user clicked view records button on the top of main page
     if (targetId === 'view-records-btn' || targetId === 'clearModal-records-btn'){
-        console.log('ptin')
+        //adding an effect when first open the modal 
         if (targetId === 'view-records-btn'){
             modalZoomEffect = 'modal-zoom-in';
         }
-
+        // rendering
         modalEl.innerHTML = 
         `<div class="modal-body `+ modalZoomEffect +`">
             <header>
@@ -201,125 +247,96 @@ function renderHighScores(recordsData) {
                 <ul class="`+ scoreModalStyling +` scores-list">`+ recordsStr +`</ul>
             </div>
             <footer>
-                <button id="clearModal-records-btn" class="clearModal-records-btn btn btn-hover">Clear Records</button>
+                <button id="clearModal-records-btn" class="clearModal-records-btn clear-records-btn btn btn-hover">Clear Records</button>
                 <button id="close-modal-btn" class="close-modal-btn btn btn-hover">Close</button>
             </footer>
         </div>
         <div class="overlay"></div>`
     }else {
+        // else, rendering on the high scores page
         contentEl.innerHTML = 
             `<div class="high-scores">
-            <h2>High Scores:</h2>
-            <ul class="scores-list `+ highScoresStyling +`">`+ recordsStr +`</ul>
-            <div class="high-scores-btn">
-            <button id="go-back-btn" class="go-back-btn btn btn-hover">Go Back</button>
-            <button id="clear-records-btn" class="clear-records-btn btn btn-hover">Clear Records</button>
-            </div>
+                <h2>High Scores:</h2>
+                <ul class="scores-list `+ highScoresStyling +`">`+ recordsStr +`</ul>
+                <div class="high-scores-btn">
+                    <button id="go-back-btn" class="go-back-btn btn btn-hover">Go Back</button>
+                    <button id="clear-records-btn" class="clear-records-btn btn btn-hover">Clear Records</button>
+                </div>
             </div>`
     }
+}
 
-    }
-    
-    
-    function calculateResult() {
-        let correct = scoreResult.correct;
-        let inCorrect = scoreResult.inCorrect;
-        let timeLeft = scoreResult.timeLeft;
-        scoreResult.accuracy = ((correct / quizDataBase.length * 100)).toFixed(1);
-        scoreResult.score = correct * 3 - inCorrect * 1 + timeLeft * 1.5;
-        if(scoreResult.score < 0){
-            scoreResult.score = 0;
-        }
-        renderResults();
-    }
-    
-    function validateInitials() {
-        const initialsEl = document.querySelector('.initials');
-        const initialsAlertEl = document.querySelector('.initials-input-alert');
-        let highScoresObj = {};
-        if(initialsEl.value ==='') {
-            initialsAlertEl.textContent = "Please enter your initials!"
-        } else {
-            highScoresObj.initials = initialsEl.value;
-            highScoresObj.score = scoreResult.score;
-            console.log(highScoresObj)
-            recordsData.push(highScoresObj);
-            saveRecordsToLocal();
-        } ;
-    }
-    
-    function saveRecordsToLocal() {
-        recordsData.sort( (a, b) => b.score - a.score );
-        localStorage.setItem('highRecords', JSON.stringify(recordsData));
-        renderHighScores(recordsData);
-    }
-    
-    function clearRecordsData() {
-        recordsData = [];
-        saveRecordsToLocal();
-    }
-    
-    function closeModal() {
-        console.log('clos')
-        console.log(modalEl.children[0]);        
-        modalEl.children[0].classList.add('modal-zoom-out');
-        setTimeout( () => modalEl.innerHTML = '' , 500);
+// clear records function, save and re-render
+function clearRecordsData() {
+    recordsData = [];
+    saveRecordsToLocal();
+}
+
+// closeModal function
+function closeModal() {
+    // adding the closing effect
+    modalEl.children[0].classList.add('modal-zoom-out');
+    setTimeout( () => modalEl.innerHTML = '' , 500);
+}
+
+// when a button got clicked, analyze which btn it is and run the corresponding function
+function detectBtn(e){
+    e.preventDefault();
+
+    if (e.target.nodeName !== 'BUTTON') {
+        return;
     }
 
-    // when a button got clicked, analyze which btn it is and run the corresponding function
-    function detectBtn(e){
-        e.preventDefault();
-        if (e.target.nodeName !== 'BUTTON') {
-            return;
-        }
-
-        targetId = e.target.id;
-        switch (targetId) {
-            // click the start button to start the quiz
-            case ('start-quiz-btn'): 
-            startQuiz();
-            startTimer();
+    targetId = e.target.id;
+    switch (targetId) {
+        // click the start button to start the quiz
+        case ('start-quiz-btn'): 
+        startQuiz();
+        startTimer();
+        break;
+        // click the options button to answer the question
+        case ('quiz-options-btn'): 
+        answering(e);
+        break;
+        // click the submit button to save your records with your initials
+        case ('submit-initials-btn'): 
+            validateInitials();
             break;
-            // click the options button to answer the question
-            case ('quiz-options-btn'): 
-            answering(e);
+        // click the go back button to navigate to the main page
+        case ('go-back-btn'): 
+            init();
             break;
-            // click the submit button to save your records with your initials
-            case ('submit-initials-btn'): 
-                validateInitials();
-                break;
-            // click the go back button to navigate to the main page
-            case ('go-back-btn'): 
-                init();
-                break;
-            // click the clear button to clear the data in local storage
-            case ('clear-records-btn'):
-                clearRecordsData();
-                break;
-            case ('clearModal-records-btn'):
-                clearRecordsData();
-            // click the button to view records with a modal window
-                break;
-            case ('view-records-btn'):
-                renderHighScores(recordsData);
-            // click the button to close the modal window
-                break;
-            case ('close-modal-btn'):
-                closeModal();
-        }
+        // click the clear button to clear the data in local storage
+        case ('clear-records-btn'):
+            clearRecordsData();
+            break;
+        case ('clearModal-records-btn'):
+            clearRecordsData();
+        // click the button to view records with a modal window
+            break;
+        case ('view-records-btn'):
+            renderHighScores();
+        // click the button to close the modal window
+            break;
+        case ('close-modal-btn'):
+            closeModal();
+    }
 }
 
 // initial function
 function init(){
-    // reset all of the data to use first
+    // reset all of the data first
     remainingTime = 60;
+    timerEl.classList.remove('timer-10');
     timerEl.textContent = remainingTime;
     scoreResult.correct = 0;
     scoreResult.inCorrect = 0;
+
     // view high scores button is able to click only when the client is on the first page
     viewScoresEl.disabled = false;
     viewScoresEl.classList.remove('disabled');
     viewScoresEl.classList.add('btn-hover');
+
     // deep copy from original quiz data to reset the questions without re-declare the whole content
     newQuizDataBase = [...quizDataBase];
 
