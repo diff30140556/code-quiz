@@ -12,34 +12,48 @@ console.log(recordsData)
 // store all of the questions, options and answer in an array
 const quizDataBase = [
     {
-        question: 'which fruits below is red color? which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?which fruits below is red color?',
+        question: `<img src="https://i.ibb.co/g4LtPKt/question1.png" alt="code-question">
+        What's the result of console log?`,
         options: {
-            one: 'banana',
-            two: 'apple',
-            three: 'orange',
-            four: 'pear'
+            one: 'Hello Mary',
+            two: 'Hello Tom',
+            three: 'Hello Casper',
+            four: 'None of above'
         },
-        answer: 'apple'
+        answer: 'Hello Casper'
     },
     {
-        question: 'please repeat number 3',
+        question: `<img src="https://i.ibb.co/2F0HCXx/question2.png" alt="code-question">
+        What's the result of console log?`,
         options: {
-            one: 'one',
-            two: 'two',
-            three: 'three',
-            four: 'four'
+            one: 'Hello Tomy',
+            two: 'Hello Casper',
+            three: 'Hello Mary',
+            four: 'Hello undefined'
         },
-        answer: 'three'
+        answer: 'Hello Casper'
     },
     {
-        question: "what's the sound dogs bark",
+        question: `<img src="https://i.ibb.co/XZ9pyqX/question3.png" alt="code-question">
+        What's the result of each console log?`,
         options: {
-            one: 'meow',
-            two: 'heehee',
-            three: 'ahhh',
-            four: 'woof'
+            one: '121, 81',
+            two: '110, 90',
+            three: '120, 80',
+            four: '144, 64'
         },
-        answer: 'woof'
+        answer: '121, 81'
+    },
+    {
+        question: `<img src="https://i.ibb.co/xHHLTbX/question4.png" alt="code-question">
+        What's the result of each console log?`,
+        options: {
+            one: 'true, true',
+            two: 'false, false',
+            three: 'false, true',
+            four: 'true, false'
+        },
+        answer: 'true, false'
     }
 ]
 let newQuizDataBase = [];
@@ -125,7 +139,7 @@ function answering(e) {
         e.target.classList.add('incorrect');
         scoreResult.inCorrect++;
         // subtract the remaining time if answered wrong, remaining time can't less than zero
-        remainingTime -= 30;
+        remainingTime -= 20;
         if(remainingTime < 0){
             remainingTime = 0;
             timerEl.classList.add('timer-10');
@@ -344,7 +358,14 @@ function init(){
     contentEl.innerHTML = 
     `<div class="welcome">
     <h1 class="title"> Code Quiz</h1>
-    <p class="introduce">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore cumque eligendi recusandae praesentium natus, id quos tenetur, itaque error quidem architecto, quo        deleniti! Eum dignissimos recusandae, vel in eligendi ab beatae, maiores dolores ut ratione quasi excepturi, quia assumenda nihil.</p>
+    <p class="introduce">
+    Rules:<br>
+    1. 60s timer will start counting down when the game begin. <br>
+    2. Choose 1 correct answer from the options.<br>
+    3. Quiz will end either timer reaches 0 or finish all questions.<br>
+    <br>
+    Total scores:<br>
+    Remaining seconds * 1.5 as your basic score, then each correct answer +3 pt, each wrong answer -1 pt.</p>
     <button id="start-quiz-btn" class="start-quiz-btn btn btn-hover" value="Start Quiz">Start Quiz</button>
     </div>`
 }
