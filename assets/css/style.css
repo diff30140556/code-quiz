@@ -113,8 +113,6 @@ main{
 /* quiz options setting */
 .options{
     display: flex;
-    /* justify-content: center; */
-    /* flex-direction: column; */
     width:100%;
     flex-wrap: wrap;
 }
