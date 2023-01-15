@@ -8,7 +8,6 @@ const modalEl = document.querySelector('.modal');
 let targetId = '';
 // declare variable to save the data needed
 let recordsData = JSON.parse(localStorage.getItem('highRecords')) || [];
-console.log(recordsData)
 // store all of the questions, options and answer in an array
 const quizDataBase = [
     {
