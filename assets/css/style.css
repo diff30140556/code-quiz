@@ -1,7 +1,3 @@
-:root{
-    --border1: 1px solid #000;
-}
-
 /* initialize setting */
 *,*::after,*::before{
     box-sizing: border-box;
@@ -30,7 +26,6 @@ ul,ol{
     justify-content: space-between;
     align-items: center;
     padding: 0 50px;
-    border: var(--border1);
     top: 0;
     background: rgb(132, 132, 132);
 }
@@ -48,11 +43,12 @@ main{
     justify-content: center;
     align-items: center;
     padding: 0 20px;
+    margin-bottom: 30px;
 }
 
 /* quiz content section setting */
 .content{
-    width: 650px;
+    width: 600px;
     padding: 20px;
     word-wrap: break-word;
     border-radius: 8px;
@@ -69,9 +65,11 @@ main{
 
 /* introduce content */
 .introduce{
-    font-size: 1.5em;
-    word-spacing: 2px;
+    font-size: 1.4em;
+    word-spacing: 1px;
     color: #9f08bd;
+    height: 300px;
+    overflow-y: auto;
 }
 
 /* Basic styling for all buttons */
@@ -103,9 +101,13 @@ main{
     overflow-y: auto;
 }
 .question h2{
-    font-size: 2em;
+    font-size: 1.7em;
     margin-bottom: 50px;
     color: #000000;
+}
+.question img{
+    width: 100%;
+    height: 250px;
 }
 
 /* quiz options setting */
@@ -118,7 +120,7 @@ main{
 }
 .options li{
     width: 40%;
-    margin: 15px 20px 20px 0px;
+    margin: 20px 20px 20px 0px;
 }
 
 /* options button */
@@ -142,11 +144,12 @@ main{
 }
 .correct::after{
     width: max-content;
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #009603;
     content: 'Correct! O';
     position: absolute;
-    left: 120%;
+    top: -35px;
+    left: 20px;
     animation-name: zoomIn;
     animation-duration: 0.3s;
 }
@@ -160,11 +163,12 @@ main{
 }
 .incorrect::after{
     width: max-content;
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #ff0000;
     content: 'Wrong! X';
     position: absolute;
-    left: 120%;
+    top: -35px;
+    left: 20px;
     animation-name: zoomIn;
     animation-duration: 0.3s;
 }
@@ -249,7 +253,6 @@ main{
 .modal-body{
     border-radius: 8px;
     position: absolute;
-    border: 1px solid #009603;
     background: rgb(239, 239, 239);
     z-index: 10;
     max-width: 450px;
@@ -285,7 +288,6 @@ main{
 /* overlay's setting */
 .overlay{
     position: absolute;
-    border: 1px solid #ff0000;
     top: 0;
     bottom: 0;
     left: 0;
@@ -353,17 +355,20 @@ main{
             margin: 15px 0
         }
 
-        .options li{
-            width: 80%;
+        .question{
+            max-height: 200px;
+        }
+        .question h2{
+            font-size: 1.5em;
         }
 
         .modal-body{
-            width: 80%;
+            width: 70%;
         }
 
         .high-records{
             width: unset;
-            max-width: 350px;
+            max-height: 250px;
         }
 
         .modal-body footer{
@@ -372,5 +377,34 @@ main{
 
         .modal-body footer button{
             margin: 10px 0;
+        }
+        .initials{
+            width: 90%;
+        }
+        
+        .all-done ul,
+        .submit-initials-form label{
+            font-size: 0.9em;
+        }
+
+        .quiz-options-btn{
+            padding: 6px 10px;
+            font-size: 1em;
+        }
+
+        .options li{
+            width: 80%;
+            margin: 25px 20px 0px 0px;
+        }
+
+        .correct::after,
+        .incorrect::after{
+            font-size: 0.9em;
+            top: -23px;
+            left: 5px;
+        }
+
+        .modal-body{
+            padding: 0px 10px;
         }
     }
