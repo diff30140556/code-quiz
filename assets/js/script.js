@@ -30,7 +30,7 @@ const quizDataBase = [
             three: 'Hello Mary',
             four: 'Hello undefined'
         },
-        answer: 'Hello Casper'
+        answer: 'Hello Mary'
     },
     {
         question: `<img src="https://i.ibb.co/XZ9pyqX/question3.png" alt="code-question">
