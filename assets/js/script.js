@@ -359,9 +359,9 @@ function init(){
     <h1 class="title"> Code Quiz</h1>
     <p class="introduce">
     Rules:<br>
-    1. 60s timer will start counting down when the game begin. <br>
+    1. 60s timer will start after clicking the "start quiz".<br>
     2. Choose 1 correct answer from the options.<br>
-    3. Quiz will end either timer reaches 0 or finish all questions.<br>
+    3. Quiz will end either when time's up, or all the questions are completed.<br>
     <br>
     Total scores:<br>
     Remaining seconds * 1.5 as your basic score, then each correct answer +3 pt, each wrong answer -1 pt.</p>
