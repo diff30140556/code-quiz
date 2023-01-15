@@ -142,8 +142,8 @@ function answering(e) {
         if(remainingTime < 0){
             remainingTime = 0;
             timerEl.classList.add('timer-10');
-            timerEl.textContent = remainingTime;
         }
+        timerEl.textContent = remainingTime;
     }
     
     // if there is no quiz in the dataBase or the remaining time reaches zero, clear timer and end quiz. Else, keep rendering new question
